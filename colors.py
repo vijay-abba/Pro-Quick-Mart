@@ -1,0 +1,16 @@
+# colors.py
+
+RED_START = "\033[91m"
+RED_END = "\033[0m"
+
+GREEN_START = "\033[92m"
+GREEN_END = "\033[0m"
+
+BLUE_START = "\033[94m"
+BLUE_END = "\033[0m"
+
+YELLOW_START = "\033[93m"
+YELLOW_END = "\033[0m"
+
+CYAN_START = "\033[96m"
+CYAN_END = "\033[0m"

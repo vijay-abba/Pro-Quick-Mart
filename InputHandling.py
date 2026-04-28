@@ -1,17 +1,6 @@
 from login_register.Register import Register
 from login_register.Login import Login
-
-red_start  = "\033[91m"
-red_end = "\033[0m"
-
-green_start = "\033[92m" 
-green_end =  "\033[0m"
-
-blue_start = "\033[94m"
-blue_end = "\033[0m"
-
-yellow_start = "\033[93m"
-yellow_end = "\033[0m"
+from colors import RED_END, RED_START, BLUE_START,BLUE_END,GREEN_START, GREEN_END, YELLOW_START, YELLOW_END, CYAN_START,CYAN_END
 
 class InputHandling:
 
@@ -43,7 +32,7 @@ class InputHandling:
 
 
     def login_register_page(self):
-        print(f"{blue_start}\n===== QuickMart ====={blue_end}")
+        print(f"{BLUE_START}\n===== QuickMart ====={BLUE_END}")
         print("\n1.Register 2.Login 3.Exit\n")
         input_value = input("Enter Choice: ")
 
@@ -55,33 +44,32 @@ class InputHandling:
             case "3":
                 self.state = "exit" 
             case _:
-                print( f"{red_start}Invalid input. Try again.{red_end}")
+                print( f"{RED_START}Invalid input. Try again.{RED_END}")
                 self.login_register_page()
 
         self.render_page()
 
     def register_page(self):
-        print(f"{blue_start}--- Register ---{blue_end}")
+        print(f"{BLUE_START}--- Register ---{BLUE_END}")
         username = input("Username: ")
         password = input("Password: ")
         role = input("Role: ")
 
         r1 = Register(username, password, role)
-        user_result = r1.validate_username()
-        pass_result = r1.validate_password()
-        role_result = r1.validate_role()
 
-        if not user_result:
-            print("Invalid, Try Again!")
-            self.state = "register_page"
-            self.render_page()
-            # self.register_page
+        validation_result = r1.validate_everything()
 
-        resutl = r1.create_new_user()
+        if not validation_result:
+            msg = "\nInvalid, Try Again!"
+            print(f"{RED_START}{msg}{RED_END}")
+            self.register_page()
+            
+        else:
+            resutl = r1.create_new_user()   
+            if resutl:
+                self.state = "login_register"
+                self.render_page()
 
-        if resutl:
-            self.state = "login_register"
-            self.render_page()
 
     def login_page(self):
         print("Login page")

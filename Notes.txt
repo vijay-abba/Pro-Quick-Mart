@@ -1,0 +1,24 @@
+ def register_page(self):
+        # TASK
+            #1. Check Validate Username
+            #2. check Validate Password
+            #3.  Validate Role 
+
+        # Description 
+            # Createing Register Class 
+                # creating instance  (username, passd, role)
+                # checking 
+                    #  rc1.username_validate  if(worng ) try agin
+                    #  rc1.password_validate. if(worng ) try agin
+                    #  rc1.role_validate.  if(worng ) try agin
+
+                # if successs then 
+                    # rc1.create_new_user
+                    # go back to update state to "login_register" page 
+                    # run render_page
+
+                
+
+
+
+

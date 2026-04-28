@@ -1,3 +1,18 @@
+from login_register.Register import Register
+from login_register.Login import Login
+
+red_start  = "\033[91m"
+red_end = "\033[0m"
+
+green_start = "\033[92m" 
+green_end =  "\033[0m"
+
+blue_start = "\033[94m"
+blue_end = "\033[0m"
+
+yellow_start = "\033[93m"
+yellow_end = "\033[0m"
+
 class InputHandling:
 
     def __init__(self):
@@ -7,56 +22,86 @@ class InputHandling:
         self.render_page()
 
     def render_page(self):
-        if self.state == "login_register":
-            self.login_register_page()
-        elif self.state == "register_page":
-            self.register_page()
+
+        match self.state:
+            case "login_register":
+                self.login_register_page()
+            case "register":
+                self.register_page()
+            case "login":
+                self.login_page()
+            case "staff_main":
+                self.staff_main_page()
+            case "admin_main":
+                self.admin_main_page()
+            case "inventory_management":
+                self.inventory_management_page()
+            case "new_sale":
+                self.new_sale_page()
+            case "order_history":
+                self.order_history_page()
+
 
     def login_register_page(self):
-        print("Login and Register page")
-        input_value = input("1.Register 2. Login 3. Exit: \n")
-        if input_value == "1":
-            self.state = "register_page"
-            self.input_value = input_value
-        elif input_value == "2":
-            self.state = "login_page"
-        elif input_value == "3":
-            self.state = "exit"
-        else:
-            print("Invalid Input Try Again")
-            self.login_register_page()
+        print(f"{blue_start}\n===== QuickMart ====={blue_end}")
+        print("\n1.Register 2.Login 3.Exit\n")
+        input_value = input("Enter Choice: ")
+
+        match input_value:
+            case "1":
+                self.state = "register"
+            case "2":
+                self.state = "login"
+            case "3":
+                self.state = "exit" 
+            case _:
+                print( f"{red_start}Invalid input. Try again.{red_end}")
+                self.login_register_page()
 
         self.render_page()
 
     def register_page(self):
-        print('register page')
+        print(f"{blue_start}--- Register ---{blue_end}")
         username = input("Username: ")
         password = input("Password: ")
         role = input("Role: ")
 
+        r1 = Register(username, password, role)
+        user_result = r1.validate_username()
+        pass_result = r1.validate_password()
+        role_result = r1.validate_role()
 
-        # TASK
-            #1. Check Validate Username
-            #2. check Validate Password
-            #3.  Validate Role 
+        if not user_result:
+            print("Invalid, Try Again!")
+            self.state = "register_page"
+            self.render_page()
+            # self.register_page
 
-        # Description 
-            # Createing Register Class 
-                # creating instance  (username, passd, role)
-                # checking 
-                    #  rc1.username_validate  if(worng ) try agin
-                    #  rc1.password_validate. if(worng ) try agin
-                    #  rc1.role_validate.  if(worng ) try agin
+        resutl = r1.create_new_user()
 
-                # if successs then 
-                    # rc1.create_new_user
-                    # go back to update state to "login_register" page 
-                    # run render_page
+        if resutl:
+            self.state = "login_register"
+            self.render_page()
 
-                
+    def login_page(self):
+        print("Login page")
+        username = input("Username: ")
+        password = input("Password: ")
 
+        l1 = Login(username, password)
+        user_result = l1.is_user_exist()
+        pass_result = l1.is_password_valide()
 
+        if not user_result:
+            print("Invalid, Try Again!")
+            print("Invalid, Username")
+            self.login_page
 
+        self.state = "main_page_staff"
+        self.render_page
+    
+    def main_page_staff(self):
+        pass
 
 
 

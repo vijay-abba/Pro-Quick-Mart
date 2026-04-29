@@ -77,11 +77,26 @@ class GeneralProducts:
                 print(f"{RED_START}{msg}{RED_END}")
                 return False
 
-    def fetch_product(self, product_id):
+    def fetch_product(self, product_id, product_type=0):
 
-        filtered_product_list = list(
-            filter(lambda p: p["product_id"] == product_id, self.product_list)
-        )
+        filtered_product_list = []
+
+        if product_type != 0:
+            filtered_product_list = list(
+                filter(
+                    lambda p: p["product_id"] == product_id
+                    and p["product_type"] == product_type,
+                    self.product_list,
+                )
+            )
+        else:
+            filtered_product_list = list(
+                filter(
+                    lambda p: p["product_id"] == product_id,
+                    self.product_list,
+                )
+            )
+
         if len(filtered_product_list) == 1:
             return filtered_product_list[0]
         return False
@@ -200,4 +215,213 @@ class GeneralProducts:
                 )
             )
             return True
+
+        msg = f"Found {len(low_stock_products_list)} Results"
+        print(f"{GREEN_START}{msg}{GREEN_END}")
+
         return False
+
+
+class PerishableProduct(GeneralProducts):
+
+    def add_product(self, product_name, quantity, price, expiry_date):
+
+        is_product_exists = list(
+            filter(lambda p: p["product_name"] == product_name, self.product_list)
+        )
+
+        if len(is_product_exists) >= 1:
+            msg = "This perishable product name is already in use"
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
+        else:
+            if quantity.isdigit() and price.isdigit():
+                product_id = f"PPR-{GeneralProducts.count:04d}"
+                GeneralProducts.count += 1
+                new_product_obj = {
+                    "product_id": product_id,
+                    "product_name": product_name,
+                    "quantity": int(quantity),
+                    "price": int(price),
+                    "expiry_date": expiry_date,
+                    "product_type": 2,
+                }
+                self.product_list.append(new_product_obj)
+                self.save_product_list()
+                msg = f"ADDED! ID {product_id}"
+                print(f"{GREEN_START}{msg}{GREEN_END}")
+                return True
+            else:
+                msg = "Please enter a valid number for price and quantity."
+                print(f"{RED_START}{msg}{RED_END}")
+                return False
+
+    def update_product(self, product_id, product_name, quantity, price, expiry_date):
+
+        if quantity.isdigit() and price.isdigit():
+            new_product_obj = {
+                "product_id": product_id,
+                "product_name": product_name,
+                "quantity": int(quantity),
+                "price": int(price),
+                "expiry_date": expiry_date,
+                "product_type": 2,
+            }
+            new_product_list = list(
+                map(
+                    lambda p: (
+                        new_product_obj
+                        if new_product_obj["product_id"] == p["product_id"]
+                        else p
+                    ),
+                    self.product_list,
+                )
+            )
+
+            self.product_list = new_product_list
+            self.save_product_list()
+            msg = f"UPDATED! ID {product_id}"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+            return True
+        else:
+            msg = "Please enter a valid number for price and quantity."
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
+
+
+class ElectronicProduct(GeneralProducts):
+
+    def add_product(self, product_name, quantity, price, warranty_months):
+
+        is_product_exists = list(
+            filter(lambda p: p["product_name"] == product_name, self.product_list)
+        )
+
+        if len(is_product_exists) >= 1:
+            msg = "This perishable product name is already in use"
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
+        else:
+            if quantity.isdigit() and price.isdigit() and warranty_months.isdigit():
+                product_id = f"PPR-{GeneralProducts.count:04d}"
+                GeneralProducts.count += 1
+                new_product_obj = {
+                    "product_id": product_id,
+                    "product_name": product_name,
+                    "quantity": int(quantity),
+                    "price": int(price),
+                    "warranty_months": int(warranty_months),
+                    "product_type": 3,
+                }
+                self.product_list.append(new_product_obj)
+                self.save_product_list()
+                msg = f"ADDED! ID {product_id}"
+                print(f"{GREEN_START}{msg}{GREEN_END}")
+                return True
+            else:
+                msg = "Please enter a valid number for price, quantity and warranty months."
+                print(f"{RED_START}{msg}{RED_END}")
+                return False
+
+    def update_product(
+        self, product_id, product_name, quantity, price, warranty_months
+    ):
+
+        if quantity.isdigit() and price.isdigit() and warranty_months.isdigit():
+            new_product_obj = {
+                "product_id": product_id,
+                "product_name": product_name,
+                "quantity": int(quantity),
+                "price": int(price),
+                "warranty_months": int(warranty_months),
+                "product_type": 3,
+            }
+            new_product_list = list(
+                map(
+                    lambda p: (
+                        new_product_obj
+                        if new_product_obj["product_id"] == p["product_id"]
+                        else p
+                    ),
+                    self.product_list,
+                )
+            )
+
+            self.product_list = new_product_list
+            self.save_product_list()
+            msg = f"UPDATED! ID {product_id}"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+            return True
+        else:
+            msg = "Please enter a valid number for price and quantity."
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
+
+
+class ClothingProduct(GeneralProducts):
+
+    def add_product(self, product_name, quantity, price, size, material):
+
+        is_product_exists = list(
+            filter(lambda p: p["product_name"] == product_name, self.product_list)
+        )
+
+        if len(is_product_exists) >= 1:
+            msg = "This perishable product name is already in use"
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
+        else:
+            if quantity.isdigit() and price.isdigit():
+                product_id = f"PPR-{GeneralProducts.count:04d}"
+                GeneralProducts.count += 1
+                new_product_obj = {
+                    "product_id": product_id,
+                    "product_name": product_name,
+                    "quantity": int(quantity),
+                    "price": int(price),
+                    "size": size,
+                    "material": material,
+                    "product_type": 4,
+                }
+                self.product_list.append(new_product_obj)
+                self.save_product_list()
+                msg = f"ADDED! ID {product_id}"
+                print(f"{GREEN_START}{msg}{GREEN_END}")
+                return True
+            else:
+                msg = "Please enter a valid number for price and quantity."
+                print(f"{RED_START}{msg}{RED_END}")
+                return False
+
+    def update_product(self, product_id, product_name, quantity, price, size, material):
+
+        if quantity.isdigit() and price.isdigit():
+            new_product_obj = {
+                "product_id": product_id,
+                "product_name": product_name,
+                "quantity": int(quantity),
+                "price": int(price),
+                "size": size,
+                "material": material,
+                "product_type": 4,
+            }
+            new_product_list = list(
+                map(
+                    lambda p: (
+                        new_product_obj
+                        if new_product_obj["product_id"] == p["product_id"]
+                        else p
+                    ),
+                    self.product_list,
+                )
+            )
+
+            self.product_list = new_product_list
+            self.save_product_list()
+            msg = f"UPDATED! ID {product_id}"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+            return True
+        else:
+            msg = "Please enter a valid number for price and quantity."
+            print(f"{RED_START}{msg}{RED_END}")
+            return False

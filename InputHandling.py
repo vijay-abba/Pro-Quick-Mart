@@ -1,7 +1,13 @@
 from login_register.Register import Register
 from login_register.Login import Login
 
-from inventory.products import GeneralProducts
+from inventory.products import (
+    GeneralProducts,
+    PerishableProduct,
+    ElectronicProduct,
+    ClothingProduct,
+)
+
 
 from colors import (
     RED_END,
@@ -227,7 +233,6 @@ class InputHandling:
         print(f"{BLUE_START}===== Type ====={BLUE_END}")
         print("1-General 2-Perishable 3-Electronic 4-Clothing 5-Back")
         type_input_value = input("Enter Choice: ")
-        print(type_input_value)
         match type_input_value:
             case "1":
                 print("--- Add General Product ---")
@@ -239,12 +244,42 @@ class InputHandling:
                 gp1.add_product(product_name, quantity, price)
 
                 self.state = "inventory_management"
+
             case "2":
                 print("--- Add Perishable Product ---")
+                product_name = input("Name: ")
+                quantity = input("Quantity: ")
+                price = input("Price: ")
+                expiry_date = input("Expiry Date: ")
+
+                pp1 = PerishableProduct()
+                pp1.add_product(product_name, quantity, price, expiry_date)
+
+                self.state = "inventory_management"
+
             case "3":
                 print("--- Add Electronic Product ---")
+                product_name = input("Name: ")
+                quantity = input("Quantity: ")
+                price = input("Price: ")
+                warranty_months = input("Expiry Date: ")
+
+                ep1 = ElectronicProduct()
+                ep1.add_product(product_name, quantity, price, warranty_months)
+
+                self.state = "inventory_management"
             case "4":
                 print("--- Add Clothing Product ---")
+                product_name = input("Name: ")
+                quantity = input("Quantity: ")
+                price = input("Price: ")
+                size = input("Size: ")
+                material = input("Material: ")
+
+                cp1 = ClothingProduct()
+                cp1.add_product(product_name, quantity, price, size, material)
+
+                self.state = "inventory_management"
             case _:
                 print(f"{RED_START}Invalid input. Try again.{RED_END}")
                 self.state = "add_product"
@@ -261,10 +296,10 @@ class InputHandling:
                 print("--- Update General Product ---")
                 product_id = input("Product ID: ")
                 gp1 = GeneralProducts()
-                product = gp1.fetch_product(product_id)
+                product = gp1.fetch_product(product_id, 1)
 
                 if not product:
-                    msg = "Product does not exist."
+                    msg = "Product does not exist In General Products."
                     print(f"{RED_START}{msg}{RED_END}")
                     self.state = "update_product"
                 else:
@@ -279,10 +314,80 @@ class InputHandling:
                     self.state = "inventory_management"
             case "2":
                 print("--- Update Perishable Product ---")
+                product_id = input("Product ID: ")
+                pp1 = PerishableProduct()  # unique
+                product = pp1.fetch_product(product_id, 2)  # number
+
+                if not product:
+                    msg = "Product does not exist In Perishable Products."
+                    print(f"{RED_START}{msg}{RED_END}")
+                    self.state = "update_product"
+                else:
+                    msg = "Previous values are in parentheses, e.g., 'Name (apples):'"
+                    print(f"{YELLOW_START}{msg}{YELLOW_END}")
+
+                    product_name = input(f"Name ({product["product_name"]}): ")
+                    quantity = input(f"Quantity ({product["quantity"]}): ")
+                    price = input(f"Price ({product["price"]}): ")
+                    expiry_date = input(
+                        f"Expiry Date ({product["expiry_date"]}): "
+                    )  # getting
+                    pp1.update_product(
+                        product_id, product_name, quantity, price, expiry_date
+                    )  # calling
+
+                    self.state = "inventory_management"
+
             case "3":
                 print("--- Update Electronic Product ---")
+                product_id = input("Product ID: ")
+                ep1 = ElectronicProduct()
+                product = ep1.fetch_product(product_id, 3)
+
+                if not product:
+                    msg = "Product does not exist In Electronic Products."
+                    print(f"{RED_START}{msg}{RED_END}")
+                    self.state = "update_product"
+                else:
+                    msg = "Previous values are in parentheses, e.g., 'Name (apples):'"
+                    print(f"{YELLOW_START}{msg}{YELLOW_END}")
+
+                    product_name = input(f"Name ({product["product_name"]}): ")
+                    quantity = input(f"Quantity ({product["quantity"]}): ")
+                    price = input(f"Price ({product["price"]}): ")
+                    warranty_months = input(
+                        f"Warranty Months ({product["warranty_months"]}): "
+                    )
+                    ep1.update_product(
+                        product_id, product_name, quantity, price, warranty_months
+                    )
+
+                    self.state = "inventory_management"
             case "4":
                 print("--- Update Clothing Product ---")
+                product_id = input("Product ID: ")
+                cp1 = ClothingProduct()
+                product = cp1.fetch_product(product_id, 4)
+
+                if not product:
+                    msg = "Product does not exist In Clothing Products."
+                    print(f"{RED_START}{msg}{RED_END}")
+                    self.state = "update_product"
+                else:
+                    msg = "Previous values are in parentheses, e.g., 'Name (apples):'"
+                    print(f"{YELLOW_START}{msg}{YELLOW_END}")
+
+                    product_name = input(f"Name ({product["product_name"]}): ")
+                    quantity = input(f"Quantity ({product["quantity"]}): ")
+                    price = input(f"Price ({product["price"]}): ")
+                    size = input(f"Size ({product["size"]}): ")
+                    material = input(f"Material ({product["material"]}): ")
+
+                    cp1.update_product(
+                        product_id, product_name, quantity, price, size, material
+                    )
+
+                    self.state = "inventory_management"
             case "5":
                 print("--- Back ---")
                 self.state = "inventory_management"

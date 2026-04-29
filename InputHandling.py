@@ -43,6 +43,7 @@ class InputHandling:
                 self.state = "login"
             case "3":
                 self.state = "exit" 
+                print("---Exit---")
             case _:
                 print( f"{RED_START}Invalid input. Try again.{RED_END}")
                 self.login_register_page()
@@ -62,35 +63,42 @@ class InputHandling:
         if not validation_result:
             msg = "\nInvalid, Try Again!"
             print(f"{RED_START}{msg}{RED_END}")
-            self.register_page()
+            return self.register_page()
             
-        else:
-            resutl = r1.create_new_user()   
-            if resutl:
-                self.state = "login_register"
-                self.render_page()
+        resutl = r1.create_new_user()   
+        if resutl:
+            self.state = "login_register"
+            self.render_page()
 
 
     def login_page(self):
-        print("Login page")
+        print(f"{BLUE_START}--- Login ---{BLUE_END}")
         username = input("Username: ")
         password = input("Password: ")
 
         l1 = Login(username, password)
-        user_result = l1.is_user_exist()
-        pass_result = l1.is_password_valide()
+        result = l1.validate_everthing()
 
-        if not user_result:
-            print("Invalid, Try Again!")
-            print("Invalid, Username")
-            self.login_page
+        if not result:
+            msg ="Invalid, Try Again!"
+            print(f"{RED_START}{msg}{RED_END}")
+            return self.login_page()
 
-        self.state = "main_page_staff"
-        self.render_page
-    
-    def main_page_staff(self):
-        pass
 
+        if l1.logined_user["role"] == "staff":
+            self.state = "staff_main"
+        elif l1.logined_user['role'] == "admin":
+            self.state = "admin_main"
+        
+        self.render_page()
+
+
+    def staff_main_page(self):
+        print(f"\n============================\n    {BLUE_START}QUICKMART MAIN MENU{BLUE_END}    \n============================\n1. Inventory Management\n2. New Sale\n3. Order History\n4. Reports\n5. Logout\n6. Exit\n============================\n")
+        input_value = input("Enter Choice: ")
+
+    def admin_main_page(self):
+        print("HOME PAGE ADMIIN")
 
 
 ih = InputHandling()

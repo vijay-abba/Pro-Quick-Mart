@@ -117,8 +117,18 @@ class GeneralProducts:
             print(f"{RED_START}{msg}{RED_END}")
             return False
 
-    def delete_product(self):
-        pass
+    def delete_product(self, product_id):
+        new_product_list = list(
+            filter(
+                lambda p: p["product_id"] != product_id,
+                self.product_list,
+            )
+        )
+        self.product_list = new_product_list
+        self.save_product_list()
+        msg = f"Deleted! ID {product_id}"
+        print(f"{GREEN_START}{msg}{GREEN_END}")
+        return True
 
     def search_product(self):
         pass

@@ -8,10 +8,21 @@
         "product_type": 1,
     },
     {
-        "product_id": "PRD-0002",
-        "product_name": "Premium Apples",
+        "product_id": "PRD-0003",
+        "product_name": "cucumber",
+        "quantity": 10,
+        "price": 30,
+        "product_type": 1,
+    },
+]
+
+
+[
+    {
+        "product_id": "PRD-0001",
+        "product_name": "A4 Paper Bundle",
         "quantity": 100,
-        "price": 300,
+        "price": 350,
         "product_type": 1,
     },
     {

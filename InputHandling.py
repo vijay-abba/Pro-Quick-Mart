@@ -50,7 +50,7 @@ class InputHandling:
                 self.add_product_page()
             case "update_product":
                 self.update_product_page()
-            case "delte_product":
+            case "delete_product":
                 self.delete_product_page()
             case "new_sale":
                 self.new_sale_page()
@@ -191,7 +191,7 @@ class InputHandling:
                 self.state = "update_product"
             case "3":
                 print("Delete")
-                self.state = "delte_product"
+                self.state = "delete_product"
             case "4":
                 print("Search")
             case "5":
@@ -258,8 +258,6 @@ class InputHandling:
                     price = input(f"Price ({product["price"]}): ")
                     gp1.update_product(product_id, product_name, quantity, price)
 
-                    
-
             case "2":
                 print("--- Update Perishable Product ---")
             case "3":
@@ -276,11 +274,20 @@ class InputHandling:
         self.render_page()
 
     def delete_product_page(self):
-        print("--- Update General Product ---")
+        print("--- Delete Product ---")
         product_id = input("Product ID: ")
         gp1 = GeneralProducts()
         product = gp1.fetch_product(product_id)
-        print(product)
+
+        if not product:
+            msg = "Product does not exist."
+            print(f"{RED_START}{msg}{RED_END}")
+            self.state = "delete_product"
+        else:
+            gp1.delete_product(product_id)
+            self.state = "inventory_management"
+
+        self.render_page()
 
 
 ih = InputHandling()

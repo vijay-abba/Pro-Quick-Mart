@@ -130,8 +130,34 @@ class GeneralProducts:
         print(f"{GREEN_START}{msg}{GREEN_END}")
         return True
 
-    def search_product(self):
-        pass
+    def search_product(self, product_name):
+        # p["product_name"].lower().contains(product_name.lower()),
+
+        search_products_list = list(
+            filter(
+                lambda p: product_name.lower() in p["product_name"].lower(),
+                self.product_list,
+            )
+        )
+
+        if len(search_products_list) > 0:
+            msg = f"Found {len(search_products_list)} Results"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+
+            msg = f"{"Product ID".rjust(1)} | {"Product Name".ljust(20)} | {"Price".ljust(10)} | {"Quantity"}"
+            print(f"{YELLOW_START}{msg}{YELLOW_END}")
+            print("_________________________________________________________")
+
+            list(
+                map(
+                    lambda p: print(
+                        f"{p["product_id"].ljust(10)} | {p["product_name"][0:15].ljust(20)} | {str(p["price"]).ljust(10)} | {p["quantity"]}"
+                    ),
+                    search_products_list,
+                )
+            )
+            return True
+        return False
 
     def view_all_product(self):
         pass

@@ -52,6 +52,8 @@ class InputHandling:
                 self.update_product_page()
             case "delete_product":
                 self.delete_product_page()
+            case "search_product":
+                self.search_product_page()
             case "new_sale":
                 self.new_sale_page()
             case "order_history":
@@ -194,6 +196,7 @@ class InputHandling:
                 self.state = "delete_product"
             case "4":
                 print("Search")
+                self.state = "search_product"
             case "5":
                 print("View All")
             case "6":
@@ -289,5 +292,17 @@ class InputHandling:
 
         self.render_page()
 
+    def search_product_page(self):
+        print("--- Search Product ---")
+        product_name = input("Product Name: ")
+        gp1 = GeneralProducts()
+        products = gp1.search_product(product_name)
+        if not products:
+            msg = "Product does not exist."
+            print(f"{RED_START}{msg}{RED_END}")
+            self.state = "search_product"
+        else:
+            # print(products)
+            pass
 
 ih = InputHandling()

@@ -160,4 +160,44 @@ class GeneralProducts:
         return False
 
     def view_all_product(self):
-        pass
+        g_msg = f"Total: {len(self.product_list)} products"
+        print(f"{GREEN_START}{g_msg}{GREEN_END}")
+
+        msg = f"{"Product ID".rjust(1)} | {"Product Name".ljust(20)} | {"Price".ljust(10)} | {"Quantity"}"
+        print(f"{YELLOW_START}{msg}{YELLOW_END}")
+        list(
+            map(
+                lambda p: print(
+                    f"{p["product_id"].ljust(10)} | {p["product_name"][0:15].ljust(20)} | {str(p["price"]).ljust(10)} | {p["quantity"]}"
+                ),
+                self.product_list,
+            )
+        )
+        return True
+
+    def low_stock_product(self):
+        low_stock_products_list = list(
+            filter(
+                lambda p: p["quantity"] < 5,
+                self.product_list,
+            )
+        )
+
+        if len(low_stock_products_list) > 0:
+            msg = f"Found {len(low_stock_products_list)} Results"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+
+            msg = f"{"Product ID".rjust(1)} | {"Product Name".ljust(20)} | {"Price".ljust(10)} | {"Quantity"}"
+            print(f"{YELLOW_START}{msg}{YELLOW_END}")
+            print("_________________________________________________________")
+
+            list(
+                map(
+                    lambda p: print(
+                        f"{p["product_id"].ljust(10)} | {p["product_name"][0:15].ljust(20)} | {str(p["price"]).ljust(10)} | {p["quantity"]}"
+                    ),
+                    low_stock_products_list,
+                )
+            )
+            return True
+        return False

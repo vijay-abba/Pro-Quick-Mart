@@ -20,14 +20,17 @@ from colors import (
 class InputHandling:
 
     def __init__(self):
-        self.state = "inventory_management"
+        self.state = "login_register"
         self.input_value = 0
+        self.logined_user = ""
+        """
         self.logined_user = {
             "username": "abba",
             "password": "b0eafb7c71ffe185963738ef1aa9aa05:592c8bbeaea2c02d7e7bf95593457d28d7d4819e6e59d6b62aec252203d1be8b",
             "role": "admin",
             "failed-login-attempts": 0,
         }
+        """
 
         self.render_page()
 
@@ -54,6 +57,10 @@ class InputHandling:
                 self.delete_product_page()
             case "search_product":
                 self.search_product_page()
+            case "view_all":
+                self.view_all_page()
+            case "low_stock":
+                self.low_stock_page()
             case "new_sale":
                 self.new_sale_page()
             case "order_history":
@@ -199,10 +206,17 @@ class InputHandling:
                 self.state = "search_product"
             case "5":
                 print("View All")
+                self.state = "view_all"
+
             case "6":
                 print("Low Stock")
+                self.state = "low_stock"
             case "7":
                 print("Back")
+                if self.logined_user["role"] == "staff":
+                    self.state = "staff_main"
+                elif self.logined_user["role"] == "admin":
+                    self.state = "admin_main"
             case _:
                 print(f"{RED_START}Invalid input. Try again.{RED_END}")
                 self.state = "inventory_management"
@@ -224,6 +238,7 @@ class InputHandling:
                 gp1 = GeneralProducts()
                 gp1.add_product(product_name, quantity, price)
 
+                self.state = "inventory_management"
             case "2":
                 print("--- Add Perishable Product ---")
             case "3":
@@ -261,6 +276,7 @@ class InputHandling:
                     price = input(f"Price ({product["price"]}): ")
                     gp1.update_product(product_id, product_name, quantity, price)
 
+                    self.state = "inventory_management"
             case "2":
                 print("--- Update Perishable Product ---")
             case "3":
@@ -302,7 +318,25 @@ class InputHandling:
             print(f"{RED_START}{msg}{RED_END}")
             self.state = "search_product"
         else:
-            # print(products)
-            pass
+            self.state = "inventory_management"
+
+        self.render_page()
+
+    def view_all_page(self):
+        print("view all page ")
+
+        gp1 = GeneralProducts()
+        products = gp1.view_all_product()
+        self.state = "inventory_management"
+        self.render_page()
+
+    def low_stock_page(self):
+        print("low stock page ")
+
+        gp1 = GeneralProducts()
+        products = gp1.low_stock_product()
+        self.state = "inventory_management"
+        self.render_page()
+
 
 ih = InputHandling()

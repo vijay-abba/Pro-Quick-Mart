@@ -48,6 +48,10 @@ class InputHandling:
                 self.inventory_management_page()
             case "add_product":
                 self.add_product_page()
+            case "update_product":
+                self.update_product_page()
+            case "delte_product":
+                self.delete_product_page()
             case "new_sale":
                 self.new_sale_page()
             case "order_history":
@@ -184,8 +188,10 @@ class InputHandling:
                 self.state = "add_product"
             case "2":
                 print("Update")
+                self.state = "update_product"
             case "3":
                 print("Delete")
+                self.state = "delte_product"
             case "4":
                 print("Search")
             case "5":
@@ -226,6 +232,55 @@ class InputHandling:
                 self.state = "add_product"
 
         self.render_page()
+
+    def update_product_page(self):
+        print(f"{BLUE_START}===== Type ====={BLUE_END}")
+        print("1-General 2-Perishable 3-Electronic 4-Clothing 5-Back")
+        type_input_value = input("Enter Choice: ")
+        print(type_input_value)
+        match type_input_value:
+            case "1":
+                print("--- Update General Product ---")
+                product_id = input("Product ID: ")
+                gp1 = GeneralProducts()
+                product = gp1.fetch_product(product_id)
+
+                if not product:
+                    msg = "Product does not exist."
+                    print(f"{RED_START}{msg}{RED_END}")
+                    self.state = "update_product"
+                else:
+                    msg = "Previous values are in parentheses, e.g., 'Name (apples):'"
+                    print(f"{YELLOW_START}{msg}{YELLOW_END}")
+
+                    product_name = input(f"Name ({product["product_name"]}): ")
+                    quantity = input(f"Quantity ({product["quantity"]}): ")
+                    price = input(f"Price ({product["price"]}): ")
+                    gp1.update_product(product_id, product_name, quantity, price)
+
+                    
+
+            case "2":
+                print("--- Update Perishable Product ---")
+            case "3":
+                print("--- Update Electronic Product ---")
+            case "4":
+                print("--- Update Clothing Product ---")
+            case "5":
+                print("--- Back ---")
+                self.state = "inventory_management"
+            case _:
+                print(f"{RED_START}Invalid input. Try again.{RED_END}")
+                self.state = "update_product"
+
+        self.render_page()
+
+    def delete_product_page(self):
+        print("--- Update General Product ---")
+        product_id = input("Product ID: ")
+        gp1 = GeneralProducts()
+        product = gp1.fetch_product(product_id)
+        print(product)
 
 
 ih = InputHandling()

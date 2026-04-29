@@ -9,9 +9,16 @@
     },
     {
         "product_id": "PRD-0002",
-        "product_name": "apples ",
+        "product_name": "Premium Apples",
+        "quantity": 100,
+        "price": 300,
+        "product_type": 1,
+    },
+    {
+        "product_id": "PRD-0003",
+        "product_name": "cucumber",
         "quantity": 10,
-        "price": 50,
+        "price": 30,
         "product_type": 1,
     },
 ]

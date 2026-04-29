@@ -77,8 +77,45 @@ class GeneralProducts:
                 print(f"{RED_START}{msg}{RED_END}")
                 return False
 
-    def update_product(self):
-        pass
+    def fetch_product(self, product_id):
+
+        filtered_product_list = list(
+            filter(lambda p: p["product_id"] == product_id, self.product_list)
+        )
+        if len(filtered_product_list) == 1:
+            return filtered_product_list[0]
+        return False
+
+    def update_product(self, product_id, product_name, quantity, price):
+
+        if quantity.isdigit() and price.isdigit():
+            new_product_obj = {
+                "product_id": product_id,
+                "product_name": product_name,
+                "quantity": int(quantity),
+                "price": int(price),
+                "product_type": 1,
+            }
+            new_product_list = list(
+                map(
+                    lambda p: (
+                        new_product_obj
+                        if new_product_obj["product_id"] == p["product_id"]
+                        else p
+                    ),
+                    self.product_list,
+                )
+            )
+
+            self.product_list = new_product_list
+            self.save_product_list()
+            msg = f"UPDATED! ID {product_id}"
+            print(f"{GREEN_START}{msg}{GREEN_END}")
+            return True
+        else:
+            msg = "Please enter a valid number for price and quantity."
+            print(f"{RED_START}{msg}{RED_END}")
+            return False
 
     def delete_product(self):
         pass

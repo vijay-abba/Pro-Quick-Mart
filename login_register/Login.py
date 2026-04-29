@@ -56,7 +56,7 @@ class Login:
             return hmac.compare_digest(new_hash, stored_hash)  # True or False
         except Exception:
             return False
-        
+
     def update_file_date(self):
         json_string = json.dumps(self.logined_user)
         with open(self.file_name, "w") as f:
@@ -71,14 +71,18 @@ class Login:
             print(f"{RED_START}{msg}{RED_END}")
             self.logined_user["failed-login-attempts"] += 1
 
-            msg2 = f"only {3 - self.logined_user["failed-login-attempts"]} attempts left"
+            msg2 = (
+                f"only {3 - self.logined_user["failed-login-attempts"]} attempts left"
+            )
             print(f"{RED_START}{msg2}{RED_END}")
             self.update_file_date()
             return False
 
         self.logined_user["failed-login-attempts"] = 0
         self.update_file_date()
-        print(f"{GREEN_START}Welcome, {self.logined_user["username"]}! (Role: {self.logined_user["role"]}){GREEN_END}")
+        print(
+            f"{GREEN_START}Welcome, {self.logined_user["username"]}! (Role: {self.logined_user["role"]}){GREEN_END}"
+        )
         return True
 
     def validate_everthing(self):

@@ -1,1 +1,1 @@
-{"username": "vijay", "password": "93e1fa4df7dd477c2a80f801b9a17d7b:ffbd57c4f529f4a55cad7f88c2531ac640721ed3cc7a92cb586a598c4b3638f0", "role": "staff", "failed-login-attempts": 3}
+{"username": "vijay", "password": "477ce90fae1f8a91c4ea1c66524ced55:0f5e464e4f31ad954dc17fd66efbd68c09b7586fa99e1db7b6495874b1698c52", "role": "admin", "failed-login-attempts": 0}

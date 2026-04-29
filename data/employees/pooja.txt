@@ -1,1 +1,1 @@
-{"username": "pooja", "password": "325c3d7d369bcfc3136509702e9e49ef:5c78af2f90afdd27a0fb53dc5d316b79040db613d46214ae3d4f3444d5ab2ec4", "role": "admin", "failed-login-attempts": 0}
+{"username": "pooja", "password": "f63c9d69649a47468b2b136561f0c907:6ab5addab0a99f7132de04d10a11166ac2454f0cf5146ef83871324d7150a76f", "role": "staff", "failed-login-attempts": 0}

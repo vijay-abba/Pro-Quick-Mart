@@ -19,6 +19,37 @@
 
                 
 
+-----
+
+def login_register_page(self):
+        print(f"{BLUE_START}\n===== QuickMart ====={BLUE_END}")
+        print("\n1.Register 2.Login 3.Exit\n")
+        input_value = input("Enter Choice: ")
+
+        match input_value:
+            case "1":
+                self.state = "register"
+            case "2":
+                self.state = "login"
+            case "3":
+                self.state = "exit" 
+                print("---Exit---")
+            case _:
+                print( f"{RED_START}Invalid input. Try again.{RED_END}")
+                self.login_register_page() # THIS IS CAUSING ISSUES 
+
+        self.render_page() THIS IS CALLED ALL THE TIEM 
+
+# INSTEAd of recusing , just update to current page only 
+
+like case_ 
+        self.state = register
+
+  render_page() anyways( all the time )
+
+  
+
+
 
 
 

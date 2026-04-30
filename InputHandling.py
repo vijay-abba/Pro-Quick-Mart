@@ -28,17 +28,17 @@ from colors import (
 class InputHandling:
 
     def __init__(self):
-        self.state = "new_sale"
+        self.state = "login_register"
         self.input_value = 0
         self.logged_in_user = ""
-        """"""
+        """
         self.logged_in_user = {
             "username": "abba",
             "password": "b0eafb7c71ffe185963738ef1aa9aa05:592c8bbeaea2c02d7e7bf95593457d28d7d4819e6e59d6b62aec252203d1be8b",
             "role": "admin",
             "failed-login-attempts": 0,
         }
-        
+        """
 
         self.render_page()
 

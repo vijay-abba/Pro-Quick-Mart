@@ -130,7 +130,7 @@ class Cart:
             "discount": discount,
             "net_amount": net_amount,
             "gst": gst,
-            "grand total": grand_total,
+            "grand_total": grand_total,
         }
 
         self.bill = bill_obj
@@ -138,8 +138,8 @@ class Cart:
         return bill_obj
 
     def print_invoice(self, logged_in_user):
-        divider = "========================================"
-        heading = "         QUICKMART - INVOICE"
+        divider = "================================================"
+        heading = "              QUICKMART - INVOICE"
         heading = f"{divider}\n{heading}\n{divider}"
         print(heading)
 
@@ -147,11 +147,10 @@ class Cart:
         now = datetime.today()
         date_string = f"Date: {now.date()}"
         user_string = f"Cahier: {logged_in_user['username']}"
-        date_user_text = f"{date_string.ljust(20)}{user_string.rjust(19)}"
+        date_user_text = f"{date_string.ljust(20)}{user_string.rjust(25)}"
         print(date_user_text)
 
-
-        divider_two = "----------------------------------------"
+        divider_two = "------------------------------------------------"
         print(divider_two)
 
         sub_heading_string = (
@@ -159,8 +158,6 @@ class Cart:
         )
 
         print(sub_heading_string)
-
-
 
         for item in self.cart:
 
@@ -184,5 +181,21 @@ class Cart:
 
         print(divider_two)
 
+        bill = self.get_bill_object()
 
+        f_total_subtotal = f"{bill["subtotal"]:.2f}"
+        pad_f_total_subtotal = f_total_subtotal.rjust(38)
+        subtotal = f"{'Subtotal:'}{pad_f_total_subtotal}"
+        print(subtotal)
 
+        f_discount_amt = f"-{bill["discount"]:.2f}"
+        print(f"Discount (10%):{f_discount_amt.rjust(32)}")
+
+        f_gst_amt = f"{bill["gst"]:.2f}"
+        print(f"GST (18%):{f_gst_amt.rjust(37)}")
+
+        f_grand_total = f"{bill["grand_total"]:.2f}"
+        # print(f_grand_total)
+        print(f"GRAND TOTAL:{f_grand_total.rjust(35)}")
+
+        print(divider)

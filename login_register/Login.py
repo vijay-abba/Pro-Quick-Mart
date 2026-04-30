@@ -25,21 +25,21 @@ class Login:
         self.file_path = Path("data/employees")
         self.file_name = self.file_path / f"{self.username}.txt"
 
-        self.logined_user = {}
+        self.logged_in_user = {}
 
     def is_user_exist(self):
         if self.file_name.is_file():
             with open(self.file_name, "r") as f:
                 json_string = f.readline()
                 user_obj = json.loads(json_string)
-                self.logined_user = user_obj
+                self.logged_in_user = user_obj
                 return True
 
         print(f"{RED_START}Username does not exist{RED_END}")
         return False
 
     def is_user_account_locked(self):
-        failed_attempts = self.logined_user["failed-login-attempts"]
+        failed_attempts = self.logged_in_user["failed-login-attempts"]
         if failed_attempts >= 3:
             print(f"{RED_START}Your account is locked. Contact admin.{RED_END}")
             return False
@@ -58,30 +58,30 @@ class Login:
             return False
 
     def update_file_date(self):
-        json_string = json.dumps(self.logined_user)
+        json_string = json.dumps(self.logged_in_user)
         with open(self.file_name, "w") as f:
             f.write(json_string)
 
     def is_password_valide(self):
         veryify_password = self.check_password(
-            self.logined_user["password"], self.password
+            self.logged_in_user["password"], self.password
         )
         if veryify_password != True:
             msg = "Incorrect Password"
             print(f"{RED_START}{msg}{RED_END}")
-            self.logined_user["failed-login-attempts"] += 1
+            self.logged_in_user["failed-login-attempts"] += 1
 
             msg2 = (
-                f"only {3 - self.logined_user["failed-login-attempts"]} attempts left"
+                f"only {3 - self.logged_in_user["failed-login-attempts"]} attempts left"
             )
             print(f"{RED_START}{msg2}{RED_END}")
             self.update_file_date()
             return False
 
-        self.logined_user["failed-login-attempts"] = 0
+        self.logged_in_user["failed-login-attempts"] = 0
         self.update_file_date()
         print(
-            f"{GREEN_START}Welcome, {self.logined_user["username"]}! (Role: {self.logined_user["role"]}){GREEN_END}"
+            f"{GREEN_START}Welcome, {self.logged_in_user["username"]}! (Role: {self.logged_in_user["role"]}){GREEN_END}"
         )
         return True
 

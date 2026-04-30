@@ -8,6 +8,8 @@ from inventory.products import (
     ClothingProduct,
 )
 
+from orders.Cart import Cart
+
 
 from colors import (
     RED_END,
@@ -26,17 +28,17 @@ from colors import (
 class InputHandling:
 
     def __init__(self):
-        self.state = "login_register"
+        self.state = "new_sale"
         self.input_value = 0
-        self.logined_user = ""
-        """
-        self.logined_user = {
+        self.logged_in_user = ""
+        """"""
+        self.logged_in_user = {
             "username": "abba",
             "password": "b0eafb7c71ffe185963738ef1aa9aa05:592c8bbeaea2c02d7e7bf95593457d28d7d4819e6e59d6b62aec252203d1be8b",
             "role": "admin",
             "failed-login-attempts": 0,
         }
-        """
+        
 
         self.render_page()
 
@@ -121,11 +123,11 @@ class InputHandling:
         result = l1.validate_everthing()
 
         if result:
-            self.logined_user = l1.logined_user
+            self.logged_in_user = l1.logged_in_user
 
-            if l1.logined_user["role"] == "staff":
+            if l1.logged_in_user["role"] == "staff":
                 self.state = "staff_main"
-            elif l1.logined_user["role"] == "admin":
+            elif l1.logged_in_user["role"] == "admin":
                 self.state = "admin_main"
         else:
             msg = "Invalid, Try Again!"
@@ -147,6 +149,7 @@ class InputHandling:
                 self.state = "inventory_management"
             case "2":
                 print("New Sale")
+                self.state = "new_sale"
             case "3":
                 print("Order History ")
             case "4":
@@ -172,7 +175,7 @@ class InputHandling:
             case "1":
                 self.state = "inventory_management"
             case "2":
-                print("New Sale")
+                self.state = "new_sale"
             case "3":
                 print("Order History ")
             case "4":
@@ -190,6 +193,8 @@ class InputHandling:
                 self.state = "admin_main"
 
         self.render_page()
+
+    # inventory Start
 
     def inventory_management_page(self):
         print(f"{BLUE_START}===== Inventory ====={BLUE_END}")
@@ -219,9 +224,9 @@ class InputHandling:
                 self.state = "low_stock"
             case "7":
                 print("Back")
-                if self.logined_user["role"] == "staff":
+                if self.logged_in_user["role"] == "staff":
                     self.state = "staff_main"
-                elif self.logined_user["role"] == "admin":
+                elif self.logged_in_user["role"] == "admin":
                     self.state = "admin_main"
             case _:
                 print(f"{RED_START}Invalid input. Try again.{RED_END}")
@@ -441,6 +446,72 @@ class InputHandling:
         gp1 = GeneralProducts()
         products = gp1.low_stock_product()
         self.state = "inventory_management"
+        self.render_page()
+
+    # inventory End
+
+    # New Sale
+    def new_sale_page(self):
+        print(f"{BLUE_START}===== Orders ====={BLUE_END}")
+        print("1.Add to Cart 2.View Cart 3.Remove Item 4.Checkout 5.Back")
+        input_value = input("Enter Choice: ")
+        print(input_value)
+
+        match input_value:
+            case "1":
+                print("Add to Cart")
+                # self.state = "add_product"
+                print("--- New Sale ---")
+                product_id = input("Product ID: ")
+                req_quantity = input("Quantity: ")
+
+                c1 = Cart()
+                product = c1.fetch_product(product_id)
+                if not product:
+                    msg = "Product does not exist In Products."
+                    print(f"{RED_START}{msg}{RED_END}")
+                    self.state = "new_sale"
+                else:
+                    if req_quantity.isdigit():
+                        if product["quantity"] >= int(req_quantity):
+                            c1.add_to_cart(product_id, req_quantity)
+                            # add
+                            self.state = "new_sale"
+
+                        else:
+                            msg = f"Only {product["quantity"]} left in stock"
+                            print(f"{RED_START}{msg}{RED_END}")
+                            self.state = "new_sale"
+                    else:
+                        msg = "Please enter a valid number for quantity."
+                        print(f"{RED_START}{msg}{RED_END}")
+                        self.state = "new_sale"
+
+            case "2":
+                print("View Cart")
+                c1 = Cart()
+                bill = c1.get_bill_object()
+
+                print(bill)
+
+                c1.print_invoice(self.logged_in_user)
+                # self.state = "update_product"
+            case "3":
+                print("Remove")
+                # self.state = "delete_product"
+            case "4":
+                print("Checkout")
+                # self.state = "search_product"
+            case "5":
+                print("Back")
+                if self.logged_in_user["role"] == "staff":
+                    self.state = "staff_main"
+                elif self.logged_in_user["role"] == "admin":
+                    self.state = "admin_main"
+            case _:
+                print(f"{RED_START}Invalid input. Try again.{RED_END}")
+                self.state = "new_sale"
+
         self.render_page()
 
 

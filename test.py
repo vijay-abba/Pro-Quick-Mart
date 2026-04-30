@@ -1,3 +1,28 @@
+# data/cart.txt
+[
+    {
+        "product_id": "PRD-0000",
+        "product_name": "Deep Work Book ",
+        "req_quantity": 10,
+        "price": 150,
+        "product_type": 1,
+    },
+    {
+        "product_id": "PPR-0002",
+        "product_name": "Milk Premium",
+        "req_quantity": 20,
+        "price": 90,
+        "product_type": 2,
+    },
+    {
+        "product_id": "PPR-0004",
+        "product_name": "Pure Silk White Shirt",
+        "req_quantity": 3,
+        "price": 4000,
+        "product_type": 4,
+    },
+]
+
 # data/products.txt
 [
     {

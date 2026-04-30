@@ -10,6 +10,8 @@ from inventory.products import (
 
 from orders.Cart import Cart
 
+from orders.Coupon import Coupon
+
 
 from colors import (
     RED_END,
@@ -28,7 +30,7 @@ from colors import (
 class InputHandling:
 
     def __init__(self):
-        self.state = "new_sale"
+        self.state = "coupons"
         self.input_value = 0
         self.logged_in_user = ""
         """"""
@@ -72,6 +74,8 @@ class InputHandling:
                 self.new_sale_page()
             case "order_history":
                 self.order_history_page()
+            case "coupons":
+                self.coupons_page()
 
     def login_register_page(self):
         print(f"{BLUE_START}\n===== QuickMart ====={BLUE_END}")
@@ -181,6 +185,7 @@ class InputHandling:
                 print("Reports")
             case "5":
                 print("Coupons")
+                self.state = "coupons"
             case "6":
                 print("User Mgmt")
             case "7":
@@ -512,6 +517,48 @@ class InputHandling:
             case _:
                 print(f"{RED_START}Invalid input. Try again.{RED_END}")
                 self.state = "new_sale"
+
+        self.render_page()
+
+    def coupons_page(self):
+        print(f"{BLUE_START}===== Coupons ====={BLUE_END}")
+        print("1.Create Coupon 2.List Coupons 3.Deactivate")
+        input_value = input("Enter Choice: ")
+        print(input_value)
+
+        match input_value:
+            case "1":
+                print("1.Create Coupon")
+
+                code = input("Code: ")
+                type = input("Type (1=%, 2=Flat): ")
+                value = input("value: ")
+                min_order = input("min_order: ")
+                expiry = input("expiry: ")
+                usage_limit = input("usage_limit: ")
+
+                coupon_obj = {
+                    "code": code,
+                    "type ": type,
+                    "value ": value,
+                    "min_order ": min_order,
+                    "expiry ": expiry,
+                    "usage_limit ": usage_limit,
+                }
+
+                cu1 = Coupon()
+                # cu1.create_coupon(coupon_obj)
+                cu1.check()
+
+            case "2":
+                print("2.List Coupons")
+                pass
+            case "3":
+                print("3.Deactivate")
+                pass
+            case _:
+                print(f"{RED_START}Invalid input. Try again.{RED_END}")
+                self.state = "coupons"
 
         self.render_page()
 

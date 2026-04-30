@@ -223,3 +223,5 @@ class Cart:
             self.save_list(self.cart_file_name, self.cart)
             msg = f"{product_id} item removed."
             print(f"{RED_START}{msg}{RED_END}")
+
+    

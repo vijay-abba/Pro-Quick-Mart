@@ -114,9 +114,12 @@ class Cart:
         )
 
         discount = 0
+        discount_type = 0
         if subtotal >= 10000:
+            discount_type = 15
             discount = (15 / 100) * subtotal
         elif subtotal >= 5000:
+            discount_type = 10
             discount = (10 / 100) * subtotal
 
         net_amount = subtotal - discount
@@ -128,6 +131,7 @@ class Cart:
         bill_obj = {
             "subtotal": subtotal,
             "discount": discount,
+            "discount_type": discount_type,
             "net_amount": net_amount,
             "gst": gst,
             "grand_total": grand_total,
@@ -138,10 +142,12 @@ class Cart:
         return bill_obj
 
     def print_invoice(self, logged_in_user):
+        self.get_bill_object()
+
         divider = "================================================"
         heading = "              QUICKMART - INVOICE"
         heading = f"{divider}\n{heading}\n{divider}"
-        print(heading)
+        print(f"{BLUE_START}{heading}{BLUE_END}")
 
         #
         now = datetime.today()
@@ -189,7 +195,8 @@ class Cart:
         print(subtotal)
 
         f_discount_amt = f"-{bill["discount"]:.2f}"
-        print(f"Discount (10%):{f_discount_amt.rjust(32)}")
+        discount_type = bill["discount_type"]
+        print(f"Discount ({discount_type}%):{f_discount_amt.rjust(32)}")
 
         f_gst_amt = f"{bill["gst"]:.2f}"
         print(f"GST (18%):{f_gst_amt.rjust(37)}")
@@ -199,3 +206,20 @@ class Cart:
         print(f"GRAND TOTAL:{f_grand_total.rjust(35)}")
 
         print(divider)
+
+    def remove_from_cart(self, product_id):
+        print("remove form caft")
+
+        cart_item = list(filter(lambda p: p["product_id"] == product_id, self.cart))
+
+        if len(cart_item) == 0:
+            msg = "Item ID not found in cart."
+            print(f"{RED_START}{msg}{RED_END}")
+        else:
+            filtered_cart_list = list(
+                filter(lambda p: p["product_id"] != product_id, self.cart)
+            )
+            self.cart = filtered_cart_list
+            self.save_list(self.cart_file_name, self.cart)
+            msg = f"{product_id} item removed."
+            print(f"{RED_START}{msg}{RED_END}")

@@ -526,35 +526,46 @@ class InputHandling:
         input_value = input("Enter Choice: ")
         print(input_value)
 
+        cu1 = Coupon()
         match input_value:
             case "1":
                 print("1.Create Coupon")
 
-                code = input("Code: ")
-                type = input("Type (1=%, 2=Flat): ")
+                coupon_code = input("Code: ")
+                coupon_type = input("Type (1=%, 2=Flat): ")
                 value = input("value: ")
                 min_order = input("min_order: ")
-                expiry = input("expiry: ")
+                expiry_date = input("expiry: ")
                 usage_limit = input("usage_limit: ")
 
-                coupon_obj = {
-                    "code": code,
-                    "type ": type,
-                    "value ": value,
-                    "min_order ": min_order,
-                    "expiry ": expiry,
-                    "usage_limit ": usage_limit,
-                }
+                """
+                coupon_code = "SAVE20"
+                coupon_type = "1"
+                value = "10"
+                min_order = "1000"
+                expiry_date = "2026-05-01"
+                usage_limit = "100"
+                """
 
-                cu1 = Coupon()
-                # cu1.create_coupon(coupon_obj)
-                cu1.check()
+                cu1.create_coupon(
+                    coupon_code, coupon_type, value, min_order, expiry_date, usage_limit
+                )
+
+                self.state = "coupons"
+                self.render_page()
 
             case "2":
                 print("2.List Coupons")
-                pass
+                cu1.list_coupons()
+
+                self.state = "coupons"
+                self.render_page()
+
             case "3":
                 print("3.Deactivate")
+                coupon_code = input("Code: ")
+                cu1.deactivate(coupon_code)
+
                 pass
             case _:
                 print(f"{RED_START}Invalid input. Try again.{RED_END}")

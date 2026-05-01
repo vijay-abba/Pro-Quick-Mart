@@ -8,16 +8,9 @@
         "product_type": 1,
     },
     {
-        "product_id": "PPR-0002",
-        "product_name": "Milk Premium",
-        "req_quantity": 20,
-        "price": 90,
-        "product_type": 2,
-    },
-    {
         "product_id": "PPR-0004",
         "product_name": "Pure Silk White Shirt",
-        "req_quantity": 3,
+        "req_quantity": 1,
         "price": 4000,
         "product_type": 4,
     },
@@ -63,5 +56,27 @@
         "size": "M",
         "material": "Silk",
         "product_type": 4,
+    },
+]
+
+# data/coupons.txt
+[
+    {
+        "coupon_code": "RELAX6",
+        "coupon_type": 1,
+        "value": 6000,
+        "min_order": 50000,
+        "expiry_date": "2026-07-21",
+        "usage_limit": 10,
+        "status": "inactive",
+    },
+    {
+        "coupon_code": "MUSTMAY",
+        "coupon_type": 2,
+        "value": 1000,
+        "min_order": 10000,
+        "expiry_date": "2026-05-31",
+        "usage_limit": 19,
+        "status": "active",
     },
 ]

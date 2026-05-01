@@ -45,9 +45,9 @@ class Coupon:
     def create_coupon(
         self, coupon_code, coupon_type, value, min_order, expiry_date, usage_limit
     ):
-        coupon_list_with_given_name = self.is_active_coupon(coupon_code)
+        coupon_list_with_given_name = self.validate_coupon(coupon_code)
 
-        if len(coupon_list_with_given_name) != 0:
+        if coupon_list_with_given_name[0] == True:
             msg = "A coupon with this code already exists and active"
             print(f"{RED_START}{msg}{RED_END}")
             return False
@@ -103,18 +103,29 @@ class Coupon:
         def print_obj(obj):
 
             b = "|".center(3)
-            print(
-                f"{obj["coupon_code"].ljust(9)}{b}{str(obj["coupon_type"]).center(4)}{b}{str(obj["value"]).center(7)}{b}{str(obj["min_order"]).center(9)}{b}{obj["expiry_date"].center(11)}{b}{str(obj["usage_limit"]).center(16)}{b}{obj["status"].center(8)}{b}"
+
+            coupon_code_t = obj["coupon_code"].ljust(9)
+            coupon_type_t = str(obj["coupon_type"]).center(4)
+            val_t = str(obj["value"]).center(7)
+            min_order_t = str(obj["min_order"]).center(9)
+            expiry_date_t = obj["expiry_date"].center(11)
+            usage_limit_t = str(obj["usage_limit"]).center(16)
+            status_t = (
+                f"{GREEN_START}{obj["status"].center(8)}{GREEN_END}"
+                if obj["status"] == "active"
+                else f"{RED_START}{obj["status"].center(8)}{RED_END}"
             )
-            # f"{obj["coupon_code"].ljust(8)} | {str(obj["coupon_type"]).rjust(2)} {"|".rjust(3)} {obj["value"]} | {obj["min_order"]} | {obj["expiry_date"]} | {obj["usage_limit"]} | {obj["status"]}"
+            print(
+                f"{coupon_code_t}{b}{coupon_type_t}{b}{val_t}{b}{min_order_t}{b}{expiry_date_t}{b}{usage_limit_t}{b}{status_t}{b}"
+            )
 
         list(map(lambda c: print_obj(c), self.coupons_list))
 
     def deactivate(self, coupon_code):
 
-        coupon_list_with_given_name = self.is_active_coupon(coupon_code)
+        coupon_list_with_given_name = self.validate_coupon(coupon_code)
 
-        if len(coupon_list_with_given_name) <= 0:
+        if coupon_list_with_given_name[0] == True:
             msg = "A coupon with this code don't exists or active"
             print(f"{RED_START}{msg}{RED_END}")
             return False
@@ -137,10 +148,12 @@ class Coupon:
         self.coupons_list = edited_coupon_list
         self.save_list(self.coupons_file_name, self.coupons_list)
 
-    # is ACtive
-    def is_active_coupon(self, coupon_code):
+        # TASK LOG ACTION
 
-        available_coupon_list = []
+    # is ACtive
+    def validate_coupon(self, coupon_code, grand_totla=0):
+
+        validation_object = [1, grand_totla, 3]
         msg = ""
 
         coupon_list_with_given_name = list(
@@ -152,8 +165,9 @@ class Coupon:
 
         if len(coupon_list_with_given_name) < 1:
             msg = "We couldn't find a coupon with that code."
-            # print(f"{RED_START}{msg}{RED_END}")
-            return available_coupon_list
+            validation_object[0] = False
+            validation_object[2] = msg
+            return validation_object
 
         for coupon in coupon_list_with_given_name:
 
@@ -165,28 +179,35 @@ class Coupon:
 
             if expiry_date_timestamp < today_timestamp:
                 msg = "This coupon expired on 21 April 2026."
+                validation_object[0] = False
+                validation_object[2] = msg
                 continue
 
             if int(coupon["usage_limit"]) < 1:
                 msg = "The usage limit for this coupon has been reached."
+                validation_object[0] = False
+                validation_object[2] = msg
                 continue
 
             if coupon["status"] != "active":
                 msg = "This coupon is inactive."
+                validation_object[0] = False
+                validation_object[2] = msg
                 continue
 
+            if coupon["coupon_type"] == 1 and grand_totla != 0:
+                discount = (coupon["value"] / 100) * grand_totla
+                validation_object[1] = discount
+
+            elif coupon["coupon_type"] == 2 and grand_totla != 0:
+                validation_object[1] = coupon["value"]
+
             msg = "This coupon is active and ready to use."
-            # print(f"{GREEN_START}{msg}{GREEN_END}")
-            available_coupon_list.append(coupon)
+            validation_object[0] = True
+            validation_object[2] = msg
 
-        # print(msg)
-        return available_coupon_list
+        return validation_object
 
-    def validate_coupon():
-        pass
 
     def log_action(self):
         pass
-
-
-# | TYPE |

@@ -21,8 +21,13 @@ class Coupon:
         self.file_path = Path("data")
         self.coupons_file_name = self.file_path / f"coupons.txt"
 
+        self.coupons_logs_file_name = self.file_path / f"coupons_logs.txt"
+
         self.coupons_list = []
         self.coupons_list = self.fetch_list(self.coupons_file_name)
+
+        self.coupons_logs = []
+        self.coupons_logs = self.fetch_list(self.coupons_logs_file_name)
 
     def fetch_list(self, file_name):
         # if no file create empty
@@ -45,9 +50,9 @@ class Coupon:
     def create_coupon(
         self, coupon_code, coupon_type, value, min_order, expiry_date, usage_limit
     ):
-        coupon_list_with_given_name = self.validate_coupon(coupon_code)
+        validate_re = self.validate_coupon(coupon_code)
 
-        if coupon_list_with_given_name[0] == True:
+        if validate_re[0] == True:
             msg = "A coupon with this code already exists and active"
             print(f"{RED_START}{msg}{RED_END}")
             return False
@@ -94,6 +99,7 @@ class Coupon:
         msg = f"Coupon {coupon_code} created!"
         print(f"{GREEN_START}{msg}{GREEN_END}")
         # TASK  ACTION LOG
+        self.log_action(msg)
 
     def list_coupons(self):
 
@@ -108,24 +114,47 @@ class Coupon:
             coupon_type_t = str(obj["coupon_type"]).center(4)
             val_t = str(obj["value"]).center(7)
             min_order_t = str(obj["min_order"]).center(9)
+
+            today = datetime.now()
+            today_time = datetime.combine(today, time.min)
+            today_timestamp = today_time.timestamp()
+
+            expiry_date_obj = datetime.strptime(obj["expiry_date"], "%Y-%m-%d")
+            expiry_date_timestamp = expiry_date_obj.timestamp()
+
             expiry_date_t = obj["expiry_date"].center(11)
-            usage_limit_t = str(obj["usage_limit"]).center(16)
+            expiry_date_fmt = (
+                f"{RED_START}{expiry_date_t}{RED_END}"
+                if expiry_date_timestamp < today_timestamp
+                else expiry_date_t
+            )
+
+            usage_limit = obj["usage_limit"]
+            usage_limit_t = str(usage_limit).center(16)
+
+            usage_limit_fmt = (
+                f"{RED_START}{usage_limit_t}{RED_END}"
+                if obj["usage_limit"] == 0
+                else usage_limit_t
+            )
+
             status_t = (
                 f"{GREEN_START}{obj["status"].center(8)}{GREEN_END}"
                 if obj["status"] == "active"
                 else f"{RED_START}{obj["status"].center(8)}{RED_END}"
             )
             print(
-                f"{coupon_code_t}{b}{coupon_type_t}{b}{val_t}{b}{min_order_t}{b}{expiry_date_t}{b}{usage_limit_t}{b}{status_t}{b}"
+                f"{coupon_code_t}{b}{coupon_type_t}{b}{val_t}{b}{min_order_t}{b}{expiry_date_fmt}{b}{usage_limit_fmt}{b}{status_t}{b}"
             )
 
         list(map(lambda c: print_obj(c), self.coupons_list))
 
     def deactivate(self, coupon_code):
 
-        coupon_list_with_given_name = self.validate_coupon(coupon_code)
+        validate = self.validate_coupon(coupon_code)
+        print(validate)
 
-        if coupon_list_with_given_name[0] == True:
+        if validate[0] != True:
             msg = "A coupon with this code don't exists or active"
             print(f"{RED_START}{msg}{RED_END}")
             return False
@@ -149,11 +178,12 @@ class Coupon:
         self.save_list(self.coupons_file_name, self.coupons_list)
 
         # TASK LOG ACTION
+        self.log_action(msg)
 
     # is ACtive
     def validate_coupon(self, coupon_code, grand_totla=0):
 
-        validation_object = [1, grand_totla, 3]
+        validation_object = [1, grand_totla, 3, -1]
         msg = ""
 
         coupon_list_with_given_name = list(
@@ -206,8 +236,22 @@ class Coupon:
             validation_object[0] = True
             validation_object[2] = msg
 
-        return validation_object
+        # print(tuple(validation_object))
+        return tuple(validation_object)
 
+    def log_action(self, text):
+        now = datetime.now()
 
-    def log_action(self):
-        pass
+        today_timestamp = now.timestamp()
+
+        line = f"{now} | {today_timestamp} | {text}"
+        self.coupons_logs.append(line)
+        self.save_list(self.coupons_logs_file_name, self.coupons_logs)
+
+    def update_coupons_usage(self, coupon_code):
+
+        for coupon in self.coupons_list:
+            if coupon["coupon_code"] == coupon_code:
+                coupon["usage_limit"] -= 1
+
+        self.save_list(self.coupons_file_name, self.coupons_list)

@@ -62,21 +62,37 @@
 # data/coupons.txt
 [
     {
-        "coupon_code": "RELAX6",
+        "coupon_code": "SAVE10",
         "coupon_type": 1,
-        "value": 6000,
-        "min_order": 50000,
-        "expiry_date": "2026-07-21",
-        "usage_limit": 10,
-        "status": "inactive",
-    },
-    {
-        "coupon_code": "MUSTMAY",
-        "coupon_type": 2,
-        "value": 1000,
+        "value": 10,
         "min_order": 10000,
         "expiry_date": "2026-05-31",
-        "usage_limit": 19,
+        "usage_limit": 100,
         "status": "active",
     },
+    {
+        "coupon_code": "SAVE20",
+        "coupon_type": 1,
+        "value": 20,
+        "min_order": 20000,
+        "expiry_date": "2026-05-31",
+        "usage_limit": 50,
+        "status": "active",
+    },
+    {
+        "coupon_code": "SAVE30",
+        "coupon_type": 1,
+        "value": 30,
+        "min_order": 30000,
+        "expiry_date": "2026-05-31",
+        "usage_limit": 10,
+        "status": "active",
+    },
+]
+
+# data/coupons_logs.txt
+[
+    "2026-05-01 22:05:52.323884 | 1777653352.323884 | Coupon SAVE10 created!",
+    "2026-05-01 22:06:14.557074 | 1777653374.557074 | Coupon SAVE20 created!",
+    "2026-05-01 22:06:38.204840 | 1777653398.20484 | Coupon SAVE30 created!",
 ]

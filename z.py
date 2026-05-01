@@ -6,10 +6,11 @@ def update_test_file():
     cart_path = "data/cart.txt"
     products_path = "data/products.txt"
     coupon_path = "data/coupons.txt"
+    coupons_logs = "data/coupons_logs.txt"
     output_path = "test.py"
 
     # Files to process
-    files_to_read = [cart_path, products_path, coupon_path]
+    files_to_read = [cart_path, products_path, coupon_path, coupons_logs]
 
     # Open test.py in write mode ('w') to clear any existing content first
     with open(output_path, "w", encoding="utf-8") as outfile:

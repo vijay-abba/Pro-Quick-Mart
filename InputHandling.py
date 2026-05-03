@@ -31,17 +31,17 @@ class InputHandling:
 
     def __init__(self):
         # self.state = "coupons"
-        self.state = "login_register"
+        self.state = "new_sale"
         self.input_value = 0
         self.logged_in_user = ""
-        """
+
         self.logged_in_user = {
             "username": "abba",
             "password": "b0eafb7c71ffe185963738ef1aa9aa05:592c8bbeaea2c02d7e7bf95593457d28d7d4819e6e59d6b62aec252203d1be8b",
             "role": "admin",
             "failed-login-attempts": 0,
         }
-"""
+        """"""
         self.render_page()
 
     def render_page(self):
@@ -508,7 +508,34 @@ class InputHandling:
                 # self.state = "delete_product"
             case "4":
                 print("Checkout")
-                # self.state = "search_product"
+
+                coupon_code = input("Coupon code (or Skip): ")
+                customer_name = input("Customer name: ")
+
+                if coupon_code == "":
+                    pass
+                else:
+                    c1 = Cart()
+                    bill_obj = c1.get_bill_object()
+                    grand_total = bill_obj["grand_total"]
+                    print(bill_obj)
+                    print(grand_total)
+                    cp = Coupon()
+
+                    result = cp.validate_coupon(coupon_code, grand_total)
+                    print(result)
+                    print(result[1])
+
+                    """
+                    """
+                    print("Order Placed ")
+                    # GENERATE ORDERS ID
+                    cp.update_coupons_usage(coupon_code)
+                    total_bill_amt = grand_total - result[1]
+                    c1.cart = []
+                    c1.save_list(c1.cart_file_name, c1.cart)
+                    print(total_bill_amt)
+
             case "5":
                 print("Back")
                 if self.logged_in_user["role"] == "staff":

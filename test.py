@@ -14,6 +14,20 @@
         "price": 4000,
         "product_type": 4,
     },
+    {
+        "product_id": "PPR-0002",
+        "product_name": "Milk Premium",
+        "req_quantity": 5,
+        "price": 90,
+        "product_type": 2,
+    },
+    {
+        "product_id": "PRD-0001",
+        "product_name": "A4 Size Papers Sheet",
+        "req_quantity": 50,
+        "price": 100,
+        "product_type": 1,
+    },
 ]
 
 # data/products.txt
@@ -67,7 +81,7 @@
         "value": 10,
         "min_order": 10000,
         "expiry_date": "2026-05-31",
-        "usage_limit": 100,
+        "usage_limit": 98,
         "status": "active",
     },
     {
@@ -95,4 +109,5 @@
     "2026-05-01 22:05:52.323884 | 1777653352.323884 | Coupon SAVE10 created!",
     "2026-05-01 22:06:14.557074 | 1777653374.557074 | Coupon SAVE20 created!",
     "2026-05-01 22:06:38.204840 | 1777653398.20484 | Coupon SAVE30 created!",
+    "2026-05-03 21:04:11.010848 | 1777822451.010848 | Coupone SAVE10 Used!",
 ]

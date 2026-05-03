@@ -253,5 +253,6 @@ class Coupon:
         for coupon in self.coupons_list:
             if coupon["coupon_code"] == coupon_code:
                 coupon["usage_limit"] -= 1
+                self.log_action(f"Coupone {coupon_code} Used!")
 
         self.save_list(self.coupons_file_name, self.coupons_list)
